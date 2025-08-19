@@ -1,20 +1,9 @@
 <?php
-//JOIN untuk menggabungkan tabel
-$query = mysqli_query($koneksi, "SELECT categories.name, blog. * FROM blog JOIN categories ON categories.id = blog.id_category ORDER BY blog.id DESC"); //DECS => itu untuk mengurutkan data dari yang terbaru
+$query = mysqli_query($koneksi, "SELECT categories.name, blogs. * FROM blogs JOIN categories ON categories.id = blogs.id_category ORDER BY blogs.id DESC"); //DECS => itu untuk mengurutkan data dari yang terbaru
 
 $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
-function changeIsActive($isActive)
-{
-    switch ($isActive) {
-        case '1':
-            $title = "<span class='badge bg-primary'>Publish</span>";
-            break;
-        default:
-            $title = "<span class='badge bg-warning'>Draft</span>";
-            break;
-    }
-    return $title;
-}
+
+
 ?>
 
 
@@ -37,9 +26,10 @@ function changeIsActive($isActive)
                         <thead>
                             <tr class="text-center">
                                 <th>No</th>
-                                <th>Gambar</th>
+                                <th>Image</th>
+                                <th>Title</th>
                                 <th>Kategori</th>
-                                <th>Judul</th>
+                                <th>Description</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -47,10 +37,11 @@ function changeIsActive($isActive)
                             <?php foreach ($rows as $key => $row): ?>
                                 <tr>
                                     <td><?php echo $key += 1 ?></td>
-                                    <td><img width="100" src="uploads/<?php echo $row['image'] ?>" alt=""></td>
+                                     <td><img width="100" src="uploads/<?php echo $row['image'] ?>" alt=""></td>
                                     <td><?php echo $row['title'] ?></td>
-                                    <td><?php echo $row['name'] ?></td>
-                                    <td><?php echo changeIsActive($row['is_active']) ?></td>
+                                    <td><?php echo $row['description'] ?></td>
+                                     <td><?php echo  ($row['is_active']) ?></td>
+                                   
                                     <td>
                                         <a href="?page=tambah-blog&edit=<?php echo $row['id'] ?>"
                                             class="btn btn-sm btn-success">Edit</a>

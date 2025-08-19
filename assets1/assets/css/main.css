@@ -84,7 +84,7 @@ h4,
 h5,
 h6 {
   color: var(--heading-color);
-  font-family: var(--heading-font);
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 /* PHP Email Form Messages
