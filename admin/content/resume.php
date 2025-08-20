@@ -1,62 +1,91 @@
 <?php
-$query = mysqli_query($koneksi, "SELECT * FROM resumes ORDER BY id DESC"); //DECS => itu untuk mengurutkan data dari yang terbaru
-$rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
+// Query Resume
+$queryResumes = mysqli_query($koneksi, "SELECT * FROM resumes ORDER BY start_year DESC")
+    or die("Query error: " . mysqli_error($koneksi));
+$resumes = mysqli_fetch_all($queryResumes, MYSQLI_ASSOC);
+
+// Kelompokkan data sesuai type
+$groups = [
+    'nonformal' => [],
+    'education' => [],
+    'experience' => [],
+    'certification' => [],
+];
+
+foreach ($resumes as $r) {
+    $type = strtolower($r['type']);
+    if (isset($groups[$type])) {
+        $groups[$type][] = $r;
+    }
+}
+
+// Fungsi helper untuk render item dalam tabel
+function renderResumeTable($items, $title)
+{
+    ?>
+    <h3 class="resume-title"><?= htmlspecialchars($title) ?></h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Title</th>
+                    <th>Start - End</th>
+                    <th>Institution</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($items)): ?>
+                    <tr>
+                        <td colspan="4" class="text-center"><em>Belum ada data.</em></td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($items as $item): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($item['title']) ?></td>
+                            <td>
+                                <?= htmlspecialchars($item['start_year']) ?>
+                                <?= $item['end_year'] ? ' - ' . htmlspecialchars($item['end_year']) : '' ?>
+                            </td>
+                            <td><?= htmlspecialchars($item['institution']) ?></td>
+                            <td><?= nl2br(htmlspecialchars($item['description'])) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+    <?php
+}
 ?>
 
+<section id="resume" class="resume section">
 
-<div class="pagetitle">
-    <h1>Data Resume</h1>
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Resume</h2>
+        <p>Perjalanan pendidikan dan pengalaman profesional saya.</p>
+    </div><!-- End Section Title -->
 
-</div><!-- End Page Title -->
+    <div class="container">
+        <div class="row">
 
-<section class="section">
-    <div class="row">
-        <div class="col-lg-12">
+            <!-- Kolom Kiri -->
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                <?php
+                renderResumeTable($groups['nonformal'], "Non Formal");
+                renderResumeTable($groups['education'], "Education");
+                ?>
+            </div>
 
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Data Resume</h5>
-                    <div class="mb-3" align="right">
-                        <a href="?page=tambah-resume" class="btn btn-primary">Tambah</a>
-                    </div>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr class="text-center">
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>Isi</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Address</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-center">
-                            <?php foreach ($rows as $key => $row): ?>
-                                <tr>
-                                    <td><?php echo $key += 1 ?></td>
-                                    <td><?php echo $row['name'] ?></td>
-                                    <td><?php echo $row['summary'] ?></td>
-                                    <td><?php echo $row['phone'] ?></td>
-                                    <td><?php echo $row['email'] ?></td>
-                                    <td><?php echo $row['address'] ?></td>
-                                    <td>
-                                        <a href="?page=tambah-resume&edit=<?php echo $row['id'] ?>"
-                                            class="btn btn-sm btn-success">Edit</a>
-                                        <a onclick="return confirm('Apakah anda yakin akan menghapus data ini?')"
-                                            href="?page=tambah-resume&delete=<?php echo $row['id'] ?>"
-                                            class="btn btn-sm btn-danger">Delete</a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-
-
-                    </table>
-                </div>
+            <!-- Kolom Kanan -->
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+                <?php
+                renderResumeTable($groups['experience'], "Professional Experience");
+                renderResumeTable($groups['certification'], "Sertifikasi");
+                ?>
             </div>
 
         </div>
-
     </div>
-
 </section>

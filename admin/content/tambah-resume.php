@@ -1,148 +1,143 @@
 <?php
-//query untuk edit 
-$id = isset($_GET['edit']) ? $_GET['edit'] : '';
-if (isset($_GET['edit'])) {
-    $id = $_GET['edit'];
-    $query = mysqli_query($koneksi, "SELECT * FROM resumes WHERE id ='$id'");
+// Ambil ID jika ada (edit / delete)
+$id        = $_GET['edit'] ?? '';
+$judulPage = $id ? "Edit Resume" : "Tambah Resume";
+
+// Jika edit → ambil data lama
+$rowEdit = [];
+if ($id) {
+    $query   = mysqli_query($koneksi, "SELECT * FROM resumes WHERE id='$id'");
     $rowEdit = mysqli_fetch_assoc($query);
-    $titleBlog = "Edit Resume";
-} else {
-    $titleBlog = "Tambah Resume";
 }
-//query untuk menghapus user
+
+// Jika delete → hapus data
 if (isset($_GET['delete'])) {
-    $id = $_GET['delete'];
-    $delete = mysqli_query($koneksi, "DELETE FROM resumes WHERE id='$id'");
+    $idDelete = $_GET['delete'];
+    $delete   = mysqli_query($koneksi, "DELETE FROM resumes WHERE id='$idDelete'");
     if ($delete) {
-        header("location:?page=resume&tambah=berhasil");
+        header("location:?page=resume&hapus=berhasil");
+        exit;
     }
 }
 
+// Jika simpan (insert / update)
 if (isset($_POST['simpan'])) {
-    $name = $_POST['name'];
-    $summary = $_POST['summary'];
-    $phone = $_POST['phone'];
-    $email = $_POST['email'];
-    $address = $_POST['address'];
+    $id_user       = $_SESSION['ID_USER'];
+    $type          = $_POST['type'];
+    $title         = $_POST['title'];
+    $subtitle      = $_POST['subtitle'];
+    $institution   = $_POST['institution'];
+    $start_year    = $_POST['start_year'];
+    $end_year      = $_POST['end_year'] ?: NULL;
+    $description   = $_POST['description'];
+    $credential    = $_POST['link'];
 
-    if (!empty($_FILES['image']['name'])) {
-        $image = $_FILES['image']['name'];
-        $tmp_name = $_FILES['image']['tmp_name'];
-        $type = mime_content_type($tmp_name);
-        $path = "uploads/";
-
-
-        $ext_allowed = ["image/png", "image/jpg", "image/jpeg"];
-        if (in_array($type, $ext_allowed)) {
-            $path = "uploads/";
-            if (!is_dir($path))
-                mkdir($path); //mkdir itu untuk memebuat folder jika belum ada //is_dir itu untuk mengecek apakah folder sudah ada atau belum
-            $image_name = time() . "-" . basename($image);
-            $target_files = $path . $image_name;
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $target_files)) {
-                //jika gambarnya ada maka gambar sebelumnya akan di ganti oleh gambar baru
-                if (!empty($row['image'])) {
-                    unlink($path . $row['image']); //unlink untuk menghapus file
-
-                }
-            }
-        } else {
-            echo "ekstitensi tidak ditemukan";
-            die();
-        }
-    }
-
-    //ini query update
     if ($id) {
-
-        $update = mysqli_query($koneksi, "UPDATE resumes SET name='$name', summary='$summary', phone='$phone', email='$email', address='$address' WHERE id='$id'");
+        // Update data
+        $update = mysqli_query($koneksi, "
+            UPDATE resumes SET 
+                type='$type',
+                title='$title',
+                subtitle='$subtitle',
+                institution='$institution',
+                start_year='$start_year',
+                end_year=" . ($end_year ? "'$end_year'" : "NULL") . ",
+                description='$description',
+                link='$credential'
+            WHERE id='$id'
+        ");
         if ($update) {
             header("location:?page=resume&ubah=berhasil");
+            exit;
         }
     } else {
-
-        $insert = mysqli_query($koneksi, "INSERT INTO resumes (name, summary, phone, email, address)
-        VALUES('$name', '$summary','$phone','$email', '$address')");
+        // Insert data baru
+        $insert = mysqli_query($koneksi, "
+            INSERT INTO resumes (type, title, subtitle, institution, start_year, end_year, description, link) 
+            VALUES ('$type', '$title', '$subtitle', '$institution', '$start_year', " . ($end_year ? "'$end_year'" : "NULL") . ", '$description', '$link')
+        ");
         if ($insert) {
             header("location:?page=resume&tambah=berhasil");
+            exit;
         }
     }
 }
-
 ?>
 
-
-
 <div class="pagetitle">
-    <h1><?php echo $titleBlog ?></h1>
-
-</div><!-- End Page Title -->
+    <h1><?= $judulPage ?></h1>
+</div>
 
 <section class="section">
-    <form action="" method="post" enctype="multipart/form-data">
     <div class="row">
-        <div class="col-lg-8">
-
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><?php echo $titleBlog ?></h5>
-                        
+                    <h5 class="card-title"><?= $judulPage ?></h5>
+
+                    <form action="" method="post">
+
                         <div class="mb-3">
-                          
-                          <label for="">Nama</label>  
-                          <input type="text" class="form-control" name="name" placeholder="Masukkan Nama" required>
+                            <label>Type</label>
+                            <select name="type" class="form-control" required>
+                                <option value="">-- Pilih Type --</option>
+                                <option value="experience" <?= ($rowEdit['type'] ?? '') == 'experience' ? 'selected' : '' ?>>Experience</option>
+                                <option value="education" <?= ($rowEdit['type'] ?? '') == 'education' ? 'selected' : '' ?>>Education</option>
+                                <option value="nonformal" <?= ($rowEdit['type'] ?? '') == 'nonformal' ? 'selected' : '' ?>>Non Formal</option>
+                                <option value="certification" <?= ($rowEdit['type'] ?? '') == 'certification' ? 'selected' : '' ?>>Certification</option>
+                            </select>
                         </div>
-                         <div class="mb-3">
-                            <label for="">Summary</label>
-                            <textarea name="summary" id="summernote"
-                                class="form-control"><?php echo ($id) ? $rowEdit['summary'] : '' ?></textarea>
-                        </div>
+
                         <div class="mb-3">
-                          <label for="">Telephone</label>  
-                          <input type="number" class="form-control" name="phone" placeholder="Masukkan No Telp" required>
+                            <label>Title</label>
+                            <input type="text" class="form-control" name="title" required
+                                value="<?= $rowEdit['title'] ?? '' ?>">
                         </div>
-                          <div class="mb-3">
-                          <label for="">Email</label>  
-                          <input type="text" class="form-control" name="email" placeholder="Masukkan Email" required>
+
+                        <div class="mb-3">
+                            <label>Subtitle</label>
+                            <input type="text" class="form-control" name="subtitle"
+                                value="<?= $rowEdit['subtitle'] ?? '' ?>">
                         </div>
-                          <div class="mb-3">
-                          <label for="">Address</label>  
-                          <input type="text" class="form-control" name="address" placeholder="Masukkan Alamat" required>
-                        </div>     
+
+                        <div class="mb-3">
+                            <label>Institution</label>
+                            <input type="text" class="form-control" name="institution"
+                                value="<?= $rowEdit['institution'] ?? '' ?>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Start Year</label>
+                            <input type="number" class="form-control" name="start_year" min="1900" max="<?= date('Y') ?>"
+                                value="<?= $rowEdit['start_year'] ?? '' ?>">
+                        </div>
+
+                        <div class="mb-3">
+                            <label>End Year</label>
+                            <input type="number" class="form-control" name="end_year" min="1900" max="<?= date('Y') ?>"
+                                value="<?= $rowEdit['end_year'] ?? '' ?>">
+                            <small class="text-muted">Kosongkan jika masih berlangsung</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Description</label>
+                            <textarea class="form-control" name="description" rows="3"><?= $rowEdit['description'] ?? '' ?></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Credential URL</label>
+                            <input type="url" class="form-control" name="link"
+                                value="<?= $rowEdit['link'] ?? '' ?>">
+                        </div>
+
+                        <div class="mb-3">
+                            <button class="btn btn-primary" type="submit" name="simpan">Simpan</button>
+                            <a href="?page=resume" class="text-muted">Kembali</a>
+                        </div>
+                    </form>
+
                 </div>
             </div>
-            
         </div>
-        
-<div class="col-lg-4">
-
- <div class="card">
-     <div class="card-body">
-         <h5 class="card-title"><?php echo $titleBlog ?></h5>
-
-         <div class="mb-3">
-             <label for="" class="form-label">Status</label>
-             <select name="is_active" id="" class="form-control">
-                 <option <?php echo ($id) ? $rowEdit['is_active'] == 1 ? 'selected' : '' : '' ?> value="1">
-                     Publish</option>
-                 <option <?php echo ($id) ? $rowEdit['is_active'] == 0 ? 'selected' : '' : '' ?> value="0">
-                     Draft</option>
-             </select>
-         </div>
-
-         <div class="mb-3">
-             <button class="btn btn-primary" type="submit" name="simpan">Simpan</button>
-             <a href="?page=user" class="text-muted">Kembali</a>
-         </div>
-
-
-     </div>
- </div>
-
-</div>
     </div>
-
-   
-</form>
-
-</section>
+</section> 
