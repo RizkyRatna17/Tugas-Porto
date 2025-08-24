@@ -1,8 +1,39 @@
-<?php 
-$queryResume = mysqli_query($koneksi, "SELECT * FROM resumes ORDER BY id DESC");
-$rowResume = mysqli_fetch_assoc($queryResume);
+<?php
+// Ambil data join dari database (sesuaikan query)
 
+$queryCategories = mysqli_query($koneksi, "SELECT * FROM categories WHERE type='resumes' ORDER BY id DESC");
+$rowCategories = mysqli_fetch_all($queryCategories, MYSQLI_ASSOC);
+
+$queryResumes = mysqli_query($koneksi, "SELECT categories.name as category_name, resumes.* FROM resumes 
+    LEFT JOIN categories ON categories.id = resumes.id_category WHERE is_active = 1 ORDER BY resumes.id DESC");
+$rowResumes = mysqli_fetch_all($queryResumes, MYSQLI_ASSOC);
+
+// Simpan ke array
+// $rowResumes = [];
+// while ($row = mysqli_fetch_all($queryResumes, MYSQLI_ASSOC)) {
+//     $rowResumes[] = $row;
+// }
+
+// Pisahkan ke dalam 2 array
+$categories = [
+    'experience' => [],
+    'education'  => [],
+    'resume'     => []
+];
+
+foreach ($rowResumes as $row) {
+    $category = $row['category_name'];
+    if (isset($categories[$category])) {
+        $categories[$category][] = $row;
+    }
+}
+
+$experience = $categories['experience'];
+$education  = $categories['education'];
+$resume     = $categories['resume'];
 ?>
+
+
 
 
 <main class="main">
@@ -13,71 +44,41 @@ $rowResume = mysqli_fetch_assoc($queryResume);
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
         <h2>Resume</h2>
-        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+        <?php foreach ($resume as $re): ?>
+        <p><?php echo $re['description'] ?></p>
       </div><!-- End Section Title -->
+      <?php endforeach ?>
 
       <div class="container">
 
         <div class="row">
-
+          
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-            <h3 class="resume-title">Sumary</h3>
-
-            <div class="resume-item pb-0">
-              <h4><?php echo $rowResume['name'] ?></h4>
-              <p><em><?php echo $rowResume['summary'] ?></em></p>
-              <ul>
-                <li><?php echo $rowResume['address'] ?></li>
-                <li><?php echo $rowResume['phone'] ?></li>
-                <li><?php echo $rowResume['email'] ?></li>
-              </ul>
-            </div><!-- Edn Resume Item -->
-
+            
             <h3 class="resume-title">Education</h3>
+            <?php foreach ($education as $edu): ?>
             <div class="resume-item">
-              <h4>Master of Fine Arts &amp; Graphic Design</h4>
-              <h5>2015 - 2016</h5>
-              <p><em>Rochester Institute of Technology, Rochester, NY</em></p>
-              <p>Qui deserunt veniam. Et sed aliquam labore tempore sed quisquam iusto autem sit. Ea vero voluptatum qui ut dignissimos deleniti nerada porti sand markend</p>
+              <h4><?php echo $edu['title'] ?></h4>
+              <h5><?php echo $edu['start_year'] ?> - <?php echo $edu['end_year'] ?></h5>
+              <p><em><?php echo $edu['institution'] ?></em></p>
+              <p><?php echo $edu['description'] ?></p>
             </div><!-- Edn Resume Item -->
-
-            <div class="resume-item">
-              <h4>Bachelor of Fine Arts &amp; Graphic Design</h4>
-              <h5>2010 - 2014</h5>
-              <p><em>Rochester Institute of Technology, Rochester, NY</em></p>
-              <p>Quia nobis sequi est occaecati aut. Repudiandae et iusto quae reiciendis et quis Eius vel ratione eius unde vitae rerum voluptates asperiores voluptatem Earum molestiae consequatur neque etlon sader mart dila</p>
-            </div><!-- Edn Resume Item -->
+            <?php endforeach ?>
 
           </div>
 
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
             <h3 class="resume-title">Professional Experience</h3>
+            <?php foreach ($experience as $exp): ?>
             <div class="resume-item">
-              <h4>Senior graphic design specialist</h4>
-              <h5>2019 - Present</h5>
-              <p><em>Experion, New York, NY </em></p>
-              <ul>
-                <li>Lead in the design, development, and implementation of the graphic, layout, and production communication materials</li>
-                <li>Delegate tasks to the 7 members of the design team and provide counsel on all aspects of the project. </li>
-                <li>Supervise the assessment of all graphic materials in order to ensure quality and accuracy of the design</li>
-                <li>Oversee the efficient use of production project budgets ranging from $2,000 - $25,000</li>
-              </ul>
+              <h4><?php echo $exp['title'] ?></h4>
+              <h5><?php echo $exp['start_year'] ?> - <?php echo $exp['end_year'] ?></h5>
+              <p><em><?php echo $exp['institution'] ?></em></p>
+             <p><em><?php echo $exp['description'] ?></em></p>
             </div><!-- Edn Resume Item -->
-
-            <div class="resume-item">
-              <h4>Graphic design specialist</h4>
-              <h5>2017 - 2018</h5>
-              <p><em>Stepping Stone Advertising, New York, NY</em></p>
-              <ul>
-                <li>Developed numerous marketing programs (logos, brochures,infographics, presentations, and advertisements).</li>
-                <li>Managed up to 5 projects or tasks at a given time while under pressure</li>
-                <li>Recommended and consulted with clients on the most appropriate graphic design</li>
-                <li>Created 4+ design presentations and proposals a month for clients and account managers</li>
-              </ul>
-            </div><!-- Edn Resume Item -->
+            <?php endforeach; ?>
 
           </div>
-
         </div>
 
       </div>

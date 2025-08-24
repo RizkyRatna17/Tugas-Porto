@@ -55,7 +55,7 @@ function changeIsActive($isActive)
                                         <a href="?page=tambah-portofolio&edit=<?php echo $row['id'] ?>"
                                             class="btn btn-sm btn-success">Edit</a>
                                         <a onclick="return confirm('Apakah anda yakin akan menghapus data ini?')"
-                                            href="?page=tambah-potofolio&delete=<?php echo $row['id'] ?>"
+                                            href="?page=tambah-portofolio&delete=<?php echo $row['id'] ?>"
                                             class="btn btn-sm btn-danger">Delete</a>
                                     </td>
                                 </tr>

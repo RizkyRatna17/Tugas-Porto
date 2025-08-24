@@ -15,7 +15,7 @@ $rowPortofolios = mysqli_fetch_all($queryPortofolios, MYSQLI_ASSOC);
         <h1 class="mb-2 mb-lg-0">Portfolio</h1>
         <nav class="breadcrumbs">
             <ol>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="?page=home">Home</a></li>
                 <li class="current">Portfolio</li>
             </ol>
         </nav>
@@ -49,8 +49,8 @@ $rowPortofolios = mysqli_fetch_all($queryPortofolios, MYSQLI_ASSOC);
                             <a href="admin/uploads/<?php echo $row['image'] ?>" title="<?php echo $row['title'] ?>"
                                 data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i
                                     class="bi bi-zoom-in"></i></a>
-                            <a href="?page=portofolio-detail" title="More Details" class="details-link"><i
-                                    class="bi bi-link-45deg"></i></a>
+                            <!-- <a href="?page=portofolio-detail" title="More Details" class="details-link"><i
+                                    class="bi bi-link-45deg"></i></a> -->
                         </div>
                     </div><!-- End Portfolio Item -->
                 <?php endforeach; ?>

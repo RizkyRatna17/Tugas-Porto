@@ -44,7 +44,7 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
                         <div class="meta-top">
                             <ul>
                                 <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
-                                        href="blog-details.html"></a><?php echo $rowBlogDetail['penulis'] ?></li>
+                                        href="blog-details.html"></a>zkyit</li>
                                 <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
                                         href="blog-details.html"><time
                                             datetime="2020-01-01"><?php echo date("M d, Y", strtotime($rowBlogDetail['created_at'])) ?></time></a>
@@ -55,7 +55,7 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
                         </div><!-- End meta top -->
 
                         <div class="content">
-                            <?php echo $rowBlogDetail['content'] ?>
+                            <?php echo $rowBlogDetail['description'] ?>
                         </div><!-- End post content -->
 
                         <div class="meta-bottom">
@@ -63,17 +63,7 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
                             <ul class="cats">
                                 <li><a href="#"><?php echo $rowBlogDetail['name'] ?></a></li>
                             </ul>
-                            <?php
-                            $tags = json_decode($rowBlogDetail['tags'], true);
-                            ?>
-
-                            <i class="bi bi-tags"></i>
-                            <ul class="tags">
-                                <?php foreach ($tags as $tag): ?>
-                                    <li><a href="#"><?php echo $tag['value'] ?></a></li>
-                                <?php endforeach ?>
-
-                            </ul>
+                           
                         </div><!-- End meta bottom -->
 
                     </article>
@@ -85,13 +75,13 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
 
         </div>
 
-        <div class="col-lg-4 sidebar">
+        <div class="col-lg-4 sidebar py-5">
 
             <div class="widgets-container">
                 <!-- Search Widget -->
                 <div class="search-widget widget-item">
 
-                    <h3 class="widget-title">Search</h3>
+                    <h5 class="widget-title">Search</h5>
                     <form action="">
                         <input type="text">
                         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
@@ -100,15 +90,15 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
                 </div><!--/Search Widget -->
 
                 <!-- Recent Posts Widget -->
-                <div class="recent-posts-widget widget-item">
+                <div class="recent-posts-widget widget-item mt-5">
 
-                    <h3 class="widget-title">Recent Posts</h3>
+                    <h5 class="widget-title">Recent Posts</h5>
                     <?php foreach ($rowRecentBlog as $recentBlog): ?>
 
                         <div class="post-item">
-                            <h4><a
+                            <h6><a
                                     href="?page=blog-detail&id=<?php echo $recentBlog['id'] ?>"><?php echo $recentBlog['title'] ?></a>
-                            </h4>
+                            </h6>
                             <time
                                 datetime="2020-01-01"><?php echo date("M d, Y", strtotime($recentBlog['created_at'])) ?></time>
                         </div><!-- End recent post item-->
@@ -118,25 +108,7 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
                 </div><!--/Recent Posts Widget -->
 
                 <!-- Tags Widget -->
-                <div class="tags-widget widget-item">
-
-                    <h3 class="widget-title">Tags</h3>
-                    <ul>
-                        <li><a href="#">App</a></li>
-                        <li><a href="#">IT</a></li>
-                        <li><a href="#">Business</a></li>
-                        <li><a href="#">Mac</a></li>
-                        <li><a href="#">Design</a></li>
-                        <li><a href="#">Office</a></li>
-                        <li><a href="#">Creative</a></li>
-                        <li><a href="#">Studio</a></li>
-                        <li><a href="#">Smart</a></li>
-                        <li><a href="#">Tips</a></li>
-                        <li><a href="#">Marketing</a></li>
-                    </ul>
-
-                </div><!--/Tags Widget -->
-
+               
             </div>
 
         </div>

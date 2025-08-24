@@ -83,6 +83,7 @@ h3,
 h4,
 h5,
 h6 {
+
   color: var(--heading-color);
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;
 }

@@ -1,11 +1,11 @@
 <?php
-$query = mysqli_query($koneksi, "SELECT * FROM resumes ORDER BY id DESC"); //DECS => itu untuk mengurutkan data dari yang terbaru
+$query = mysqli_query($koneksi, "SELECT * FROM education ORDER BY id DESC"); //DECS => itu untuk mengurutkan data dari yang terbaru
 $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
 ?>
 
 
 <div class="pagetitle">
-    <h1>Data Resume</h1>
+    <h1>Data Education</h1>
 
 </div><!-- End Page Title -->
 
@@ -15,9 +15,9 @@ $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
 
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Data Resume</h5>
+                    <h5 class="card-title">Data Education</h5>
                     <div class="mb-3" align="right">
-                        <a href="?page=tambah-resume" class="btn btn-primary">Tambah</a>
+                        <a href="?page=tambah-education" class="btn btn-primary">Tambah</a>
                     </div>
                     <table class="table table-bordered">
                         <thead>
@@ -40,10 +40,10 @@ $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
                                     <td><?php echo $row['email'] ?></td>
                                     <td><?php echo $row['address'] ?></td>
                                     <td>
-                                        <a href="?page=tambah-resume&edit=<?php echo $row['id'] ?>"
+                                        <a href="?page=tambah-education&edit=<?php echo $row['id'] ?>"
                                             class="btn btn-sm btn-success">Edit</a>
                                         <a onclick="return confirm('Apakah anda yakin akan menghapus data ini?')"
-                                            href="?page=tambah-resume&delete=<?php echo $row['id'] ?>"
+                                            href="?page=tambah-education&delete=<?php echo $row['id'] ?>"
                                             class="btn btn-sm btn-danger">Delete</a>
                                     </td>
                                 </tr>

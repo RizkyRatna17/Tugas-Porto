@@ -27,7 +27,7 @@ $rowContact = mysqli_fetch_assoc($queryContact);
                 <i class="bi bi-geo-alt flex-shrink-0"></i>
                 <div>
                   <h3>Address</h3>
-                  <p><?php echo $rowContact['address'] ?><</p>
+                  <p><?php echo $rowContact['address'] ?></p>
                 </div>
               </div><!-- End Info Item -->
 
@@ -35,7 +35,7 @@ $rowContact = mysqli_fetch_assoc($queryContact);
                 <i class="bi bi-telephone flex-shrink-0"></i>
                 <div>
                   <h3>Call Us</h3>
-                  <p><?php echo $rowContact['phone'] ?><</p>
+                  <p><?php echo $rowContact['phone'] ?></p>
                 </div>
               </div><!-- End Info Item -->
 
@@ -43,7 +43,7 @@ $rowContact = mysqli_fetch_assoc($queryContact);
                 <i class="bi bi-envelope flex-shrink-0"></i>
                 <div>
                   <h3>Email Us</h3>
-                  <p><?php echo $rowContact['email'] ?><</p>
+                  <p><?php echo $rowContact['email'] ?></p>
                 </div>
               </div><!-- End Info Item -->
 

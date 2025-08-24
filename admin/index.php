@@ -71,7 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
   ======================================================== -->
 </head>
 
-<body>
+<body style="background: url('assets/uploads/1755398126-clouds-1846760_1280.jpg') no-repeat center center fixed; 
+             background-size: cover;">
 
     <main>
         <div class="container">

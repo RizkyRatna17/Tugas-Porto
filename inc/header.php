@@ -10,7 +10,7 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="?page=home" class="active">Home</a></li>
           <li><a href="?page=about">About</a></li>
           <li><a href="?page=resume">Resume</a></li>
           <li><a href="?page=blog">Blog</a></li>

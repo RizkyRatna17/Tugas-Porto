@@ -26,8 +26,8 @@ $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
                         <thead>
                             <tr class="text-center">
                                 <th>No</th>
-                                <th>Image</th>
-                                <th>Title</th>
+                                <th>Gambar</th>
+                                <th>Judul</th>
                                 <th>Kategori</th>
                                 <th>Description</th>
                                 <th>Status</th>
@@ -39,12 +39,13 @@ $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
                                     <td><?php echo $key += 1 ?></td>
                                      <td><img width="100" src="uploads/<?php echo $row['image'] ?>" alt=""></td>
                                     <td><?php echo $row['title'] ?></td>
+                                    <td><?php echo $row['id_category'] ?></td>
                                     <td><?php echo $row['description'] ?></td>
                                      <td><?php echo  ($row['is_active']) ?></td>
                                    
-                                    <td>
+                                    <td class ="d-flex d-inline">
                                         <a href="?page=tambah-blog&edit=<?php echo $row['id'] ?>"
-                                            class="btn btn-sm btn-success">Edit</a>
+                                            class="btn btn-sm btn-success me-2">Edit</a>
                                         <a onclick="return confirm('Apakah anda yakin akan menghapus data ini?')"
                                             href="?page=tambah-blog&delete=<?php echo $row['id'] ?>"
                                             class="btn btn-sm btn-danger">Delete</a>

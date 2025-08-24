@@ -37,9 +37,9 @@ $rows = mysqli_fetch_all($query, MYSQLI_ASSOC);
                                     <td><?php echo $row['address'] ?></td>
                                     <td><?php echo $row['phone'] ?></td>
                                     <td><?php echo $row['email'] ?></td>
-                                    <td>
+                                    <td class ="d-flex d-inline">
                                         <a href="?page=tambah-contact&edit=<?php echo $row['id'] ?>"
-                                            class="btn btn-sm btn-success">Edit</a>
+                                            class="btn btn-sm btn-success me-2">Edit</a>
                                         <a onclick="return confirm('Apakah anda yakin akan menghapus data ini?')"
                                             href="?page=tambah-contact&delete=<?php echo $row['id'] ?>"
                                             class="btn btn-sm btn-danger">Delete</a>
