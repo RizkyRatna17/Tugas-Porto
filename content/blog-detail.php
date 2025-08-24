@@ -43,8 +43,11 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
 
                         <div class="meta-top">
                             <ul>
+<<<<<<< HEAD
                                 <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a
                                         href="blog-details.html"></a>zkyit</li>
+=======
+>>>>>>> c2da3f12e1d6c40d4187b5b66c8ccbc97be06842
                                 <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a
                                         href="blog-details.html"><time
                                             datetime="2020-01-01"><?php echo date("M d, Y", strtotime($rowBlogDetail['created_at'])) ?></time></a>
@@ -58,6 +61,7 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
                             <?php echo $rowBlogDetail['description'] ?>
                         </div><!-- End post content -->
 
+<<<<<<< HEAD
                         <div class="meta-bottom">
                             <i class="bi bi-folder"></i>
                             <ul class="cats">
@@ -66,6 +70,8 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
                            
                         </div><!-- End meta bottom -->
 
+=======
+>>>>>>> c2da3f12e1d6c40d4187b5b66c8ccbc97be06842
                     </article>
 
                 </div>
@@ -81,7 +87,11 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
                 <!-- Search Widget -->
                 <div class="search-widget widget-item">
 
+<<<<<<< HEAD
                     <h5 class="widget-title">Search</h5>
+=======
+                    <h4 class="widget-title">Search</h4>
+>>>>>>> c2da3f12e1d6c40d4187b5b66c8ccbc97be06842
                     <form action="">
                         <input type="text">
                         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
@@ -92,7 +102,11 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
                 <!-- Recent Posts Widget -->
                 <div class="recent-posts-widget widget-item mt-5">
 
+<<<<<<< HEAD
                     <h5 class="widget-title">Recent Posts</h5>
+=======
+                    <h4 class="widget-title">Recent Posts</h4>
+>>>>>>> c2da3f12e1d6c40d4187b5b66c8ccbc97be06842
                     <?php foreach ($rowRecentBlog as $recentBlog): ?>
 
                         <div class="post-item">
@@ -107,8 +121,11 @@ $rowRecentBlog = mysqli_fetch_all($recentBlog, MYSQLI_ASSOC);
 
                 </div><!--/Recent Posts Widget -->
 
+<<<<<<< HEAD
                 <!-- Tags Widget -->
                
+=======
+>>>>>>> c2da3f12e1d6c40d4187b5b66c8ccbc97be06842
             </div>
 
         </div>
